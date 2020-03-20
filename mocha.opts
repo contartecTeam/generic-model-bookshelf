@@ -1,0 +1,6 @@
+--report cobertura
+--require co-mocha
+--reporter nyan
+--recursive
+--timeout 8000
+tests/mocha.init.js tests
