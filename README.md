@@ -1,0 +1,1 @@
+Generic model for bookshelf (ORM)
