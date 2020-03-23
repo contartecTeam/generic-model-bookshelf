@@ -11,8 +11,8 @@ jobs:
       - checkout
 
       - save_cache:
-          key     : repo-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
-          paths   :
+          key   : repo-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+          paths :
             - ./
 
   node_dependencies:
@@ -62,8 +62,8 @@ jobs:
           command : dockerize -wait tcp://localhost:5432 -timeout 1m
 
       - run:
-          name        : Running tests
-          command     : npm run test
+          name    : Running tests
+          command : npm run test
           environment :
           - PG_HOST             : localhost
           - PG_USER             : ubuntu
