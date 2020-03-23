@@ -1,0 +1,171 @@
+version: 2
+
+jobs:
+  checkout_code:
+    working_directory: /home/circleci/generic-model-bookshelf
+
+    docker:
+      - image: hallais/nodejs:node:10.14
+
+    steps:
+      - checkout
+
+      - save_cache:
+          key     : repo-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+          paths   : ./
+
+  node_dependencies:
+    working_directory: /home/circleci/generic-model-bookshelf
+
+    docker:
+      - image: circleci/node:10.14
+
+    steps:
+      - restore_cache:
+          key: repo-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+
+      - restore_cache:
+          key: node-cache-{{ .Branch }}-{{ checksum "package.json" }}
+
+      - run:
+          name    : Installing npm dependencies
+          command : npm install
+
+      - save_cache:
+          key   : node-cache-{{ .Branch }}-{{ checksum "package.json" }}
+          paths :
+            - ./node_modules
+
+  tests:
+    working_directory: /home/circleci/generic-model-bookshelf
+
+    docker:
+      - image: hallais/nodejs:0.8.0
+
+      - image: postgres:9.5
+        environment:
+          - POSTGRES_USER : ubuntu
+          - POSTGRES_PASSWORD : randomPasswd
+          - POSTGRES_DB   : test_generic_model
+
+    steps:
+
+      - restore_cache:
+          key: repo-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+
+      - restore_cache:
+          key: node-cache-{{ .Branch }}-{{ checksum "package.json" }}
+
+      - run:
+          name    : Waiting for Postgres
+          command : dockerize -wait tcp://localhost:5432 -timeout 1m
+
+      - run:
+          name        : Running tests
+          command     : npm run test:coverage
+          environment :
+          - PG_HOST             : localhost
+          - PG_USER             : ubuntu
+          - PG_PASSWORD         : randomPasswd
+          - TEST_HOST           : 127.0.0.1
+          - TEST_DB             : test_generic_model
+
+      - store_artifacts:
+          path    : test-results.xml
+          prefix  : tests
+
+      - store_artifacts:
+          path    : coverage
+          prefix  : coverage
+
+      - store_test_results:
+          path: test-results.xml
+
+      - save_cache:
+          key   : test-coverage-cache-{{ .Environment.CIRCLE_SHA1 }}
+          paths : ./coverage
+
+  test_coverage_upload:
+      working_directory: /home/circleci/generic-model-bookshelf
+
+      docker:
+        - image: circleci/node:10.14
+
+      steps:
+        - restore_cache:
+            key: repo-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+
+        - restore_cache:
+            key: test-coverage-cache-{{ .Environment.CIRCLE_SHA1 }}
+
+        - run:
+            name:  Downloading cc-test-reporter
+            command: |
+              curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./coverage/cc-test-reporter
+              chmod +x ./coverage/cc-test-reporter
+
+        - run:
+            name    : Uploading test coverage
+            command : |
+              ./coverage/cc-test-reporter format-coverage -t lcov -o coverage/codeclimate.coverage.json coverage/lcov.info
+              ./coverage/cc-test-reporter upload-coverage -i coverage/codeclimate.coverage.json
+
+  npm_publish:
+      working_directory: /home/circleci/generic-model-bookshelf
+
+      docker:
+        - image: circleci/node:10.14
+
+      steps:
+        - restore_cache:
+            key: repo-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+
+        - restore_cache:
+            key: node-cache-{{ .Branch }}-{{ checksum "package.json" }}
+
+        - run:
+            name: Authenticating with registry
+            command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
+
+        - run:
+            name: Publishing package
+            command: npm publish
+
+
+workflows:
+  version: 2
+
+  build-and-deploy:
+    jobs:
+      - checkout_code
+
+      - node_dependencies:
+          requires:
+            - checkout_code
+
+      - tests:
+          requires:
+            - node_dependencies
+
+      - approval:
+        filters:
+          tags:
+            only: /^v.*/
+          branches:
+            only: master
+        type: approval
+        requires:
+          - tests
+
+      - npm_publish:
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              only: master
+          requires:
+            - tests
+
+      - test_coverage_upload:
+          requires:
+            - npm_publish

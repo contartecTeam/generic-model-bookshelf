@@ -44,7 +44,7 @@ class GenericModelMock {
   insertDefault(object) {
     if (!object)
       object = {}
-      
+
     object = this.createObject(object)
 
     return this.insert(object)

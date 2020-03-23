@@ -21,7 +21,7 @@
     "generic",
     "model"
   ],
-  "author": "",
+  "author": "pantoja",
   "license": "MIT",
   "dependencies": {
     "@ourwork/object-utils": "https://github.com/hallais/ObjectUtils.git#3faca126e4ea1f4a3fa925b7ebacb84c7636f97e",
@@ -55,6 +55,20 @@
     "pg": "^4.5.7",
     "sinon": "^1.17.5",
     "sinon-as-promised": "^4.0.2",
-    "sinon-chai": "^2.8.0"
+    "sinon-chai": "^2.8.0",
+    "husky": "^3.0.5",
+    "nyc": "^14.1.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-push": "npm run lint && npm run update:docs"
+    }
+  },
+  "nyc": {
+    "exclude": [
+      "*.js",
+      "tests",
+      "enums"
+    ]
   }
 }
