@@ -12,7 +12,8 @@ jobs:
 
       - save_cache:
           key     : repo-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
-          paths   : ./
+          paths   :
+            - ./
 
   node_dependencies:
     working_directory: /home/circleci/generic-model-bookshelf
