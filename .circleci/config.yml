@@ -131,7 +131,6 @@ jobs:
             name: Publishing package
             command: npm publish
 
-
 workflows:
   version: 2
 
@@ -147,6 +146,10 @@ workflows:
           requires:
             - node_dependencies
 
+      - test_coverage_upload:
+          requires:
+            - npm_publish
+
       - approval:
         filters:
           branches:
@@ -156,14 +159,5 @@ workflows:
           - tests
 
       - npm_publish:
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              only: master
           requires:
-            - tests
-
-      - test_coverage_upload:
-          requires:
-            - npm_publish
+            - approval
