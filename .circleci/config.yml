@@ -62,7 +62,7 @@ jobs:
 
       - run:
           name        : Running tests
-          command     : npm run test:coverage
+          command     : npm run test
           environment :
           - PG_HOST             : localhost
           - PG_USER             : ubuntu
