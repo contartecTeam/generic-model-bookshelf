@@ -86,50 +86,50 @@ jobs:
           paths : ./coverage
 
   test_coverage_upload:
-      working_directory: /home/circleci/generic-model-bookshelf
+    working_directory: /home/circleci/generic-model-bookshelf
 
-      docker:
-        - image: circleci/node:10.14
+    docker:
+      - image: circleci/node:10.14
 
-      steps:
-        - restore_cache:
-            key: repo-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+    steps:
+      - restore_cache:
+          key: repo-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
 
-        - restore_cache:
-            key: test-coverage-cache-{{ .Environment.CIRCLE_SHA1 }}
+      - restore_cache:
+          key: test-coverage-cache-{{ .Environment.CIRCLE_SHA1 }}
 
-        - run:
-            name:  Downloading cc-test-reporter
-            command: |
-              curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./coverage/cc-test-reporter
-              chmod +x ./coverage/cc-test-reporter
+      - run:
+          name:  Downloading cc-test-reporter
+          command: |
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./coverage/cc-test-reporter
+            chmod +x ./coverage/cc-test-reporter
 
-        - run:
-            name    : Uploading test coverage
-            command : |
-              ./coverage/cc-test-reporter format-coverage -t lcov -o coverage/codeclimate.coverage.json coverage/lcov.info
-              ./coverage/cc-test-reporter upload-coverage -i coverage/codeclimate.coverage.json
+      - run:
+          name    : Uploading test coverage
+          command : |
+            ./coverage/cc-test-reporter format-coverage -t lcov -o coverage/codeclimate.coverage.json coverage/lcov.info
+            ./coverage/cc-test-reporter upload-coverage -i coverage/codeclimate.coverage.json
 
   npm_publish:
-      working_directory: /home/circleci/generic-model-bookshelf
+    working_directory: /home/circleci/generic-model-bookshelf
 
-      docker:
-        - image: circleci/node:10.14
+    docker:
+      - image: circleci/node:10.14
 
-      steps:
-        - restore_cache:
-            key: repo-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+    steps:
+      - restore_cache:
+          key: repo-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
 
-        - restore_cache:
-            key: node-cache-{{ .Branch }}-{{ checksum "package.json" }}
+      - restore_cache:
+          key: node-cache-{{ .Branch }}-{{ checksum "package.json" }}
 
-        - run:
-            name: Authenticating with registry
-            command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
+      - run:
+          name: Authenticating with registry
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
 
-        - run:
-            name: Publishing package
-            command: npm publish
+      - run:
+          name: Publishing package
+          command: npm publish
 
 workflows:
   version: 2
