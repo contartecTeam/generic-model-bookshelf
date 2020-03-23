@@ -149,8 +149,6 @@ workflows:
 
       - approval:
         filters:
-          tags:
-            only: /^v.*/
           branches:
             only: master
         type: approval
