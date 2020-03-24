@@ -144,12 +144,12 @@ workflows:
           - checkout_code
 
       - tests:
-          requires:
-            - node_dependencies
+        requires:
+          - node_dependencies
 
       - test_coverage_upload:
-          requires:
-            - tests
+        requires:
+          - tests
 
       - approval:
         filters:
@@ -160,5 +160,5 @@ workflows:
           - tests
 
       - npm_publish:
-          requires:
-            - approval
+        requires:
+          - approval
