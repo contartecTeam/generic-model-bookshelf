@@ -149,7 +149,7 @@ workflows:
 
       - test_coverage_upload:
           requires:
-            - npm_publish
+            - tests
 
       - approval:
         filters:
