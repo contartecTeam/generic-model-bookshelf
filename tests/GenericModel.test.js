@@ -35,45 +35,6 @@ describe('GenericModel', () => {
       })
   }
 
-  function getGenericClassMock(params = {}) {
-    const DEFAULT_PARAMS = {
-      organization_id       : params.organization_id || organization.id,
-      cpf         : `${Math.floor(Math.random() * (99999999999 - 10000000000)) + 10000000000}`,
-      name        : `Name ${Math.round(Math.random() * 999)}`,
-      enrollment      : `Enrollment ${Math.round(Math.random() * 999)}`
-    }
-
-    params = Object
-      .assign({}, DEFAULT_PARAMS, params)
-
-    return GenericClassMock
-      .createObject(params)
-  }
-
-  function *addGenericModel(attributes, object, params) {
-    attributes = Object
-      .assign({}, GenericClass.DEFAULT_ATTRIBUTES, attributes)
-
-    if (!object)
-      object = getGenericClassMock(params)
-
-    return yield new GenericModel(attributes, object)
-      .save()
-  }
-
-  function *addGenericModels(length = 3, params) {
-    const genericModels = []
-
-    for (let i = length - 1; i >= 0; i--) {
-      genericModels
-        .push(
-          yield addGenericModel(null, null, params)
-        )
-    }
-
-    return genericModels
-  }
-
   describe('#constructor', () => {
     it('should return an object of type GenericModel', () => {
       expect(genericModel).to.be.instanceOf(GenericModel)
@@ -847,13 +808,15 @@ describe('GenericModel', () => {
           organization_id: genericClass.get('organization_id'),
         }
 
-        yield addGenericModels(3, {
-          role : 0
-        })
+        yield GenericClassMock.addList({
+          role : 0,
+          organization_id: organization.id
+        }, 3)
 
-        yield addGenericModels(3, {
-          role : 1
-        })
+        yield GenericClassMock.addList({
+          role : 1,
+          organization_id: organization.id
+        }, 3)
       })
 
       it('should return the list of objects', function*() {
@@ -1030,13 +993,15 @@ describe('GenericModel', () => {
           organization_id: genericClass.get('organization_id')
         }
 
-        yield addGenericModels(3, {
-          role : 0
-        })
+        yield GenericClassMock.addList({
+          role : 0,
+          organization_id: organization.id
+        }, 3)
 
-        yield addGenericModels(3, {
-          role : 1
-        })
+        yield GenericClassMock.addList({
+          role : 1,
+          organization_id: organization.id
+        }, 3)
       })
 
       it('should return the list of objects', function*() {
@@ -1080,13 +1045,15 @@ describe('GenericModel', () => {
           organization_id: genericClass.get('organization_id')
         }
 
-        yield addGenericModels(3, {
-          role : 0
-        })
+        yield GenericClassMock.addList({
+          role : 0,
+          organization_id: organization.id
+        }, 3)
 
-        yield addGenericModels(3, {
-          role : 1
-        })
+        yield GenericClassMock.addList({
+          role : 1,
+          organization_id: organization.id
+        }, 3)
       })
 
       it('should return the object', function*() {
@@ -1164,7 +1131,7 @@ describe('GenericModel', () => {
         let genericModelCompositePK
 
         before(function*() {
-          const genericModelSaved = yield addGenericModel()
+          const genericModelSaved = yield GenericClassMock.add({ organization_id: organization.id })
 
           let modelAttributes = {
             idAttribute: ['enrollment', 'cpf']
@@ -1196,7 +1163,7 @@ describe('GenericModel', () => {
         let genericModelCompositePK
 
         before(function*() {
-          const genericModelSaved = yield addGenericModel()
+          const genericModelSaved = yield GenericClassMock.add({ organization_id: organization.id })
 
           let modelAttributes = {
             idAttribute: ['enrollment', 'cpf']
@@ -1232,7 +1199,7 @@ describe('GenericModel', () => {
         let genericModelCompositePK
 
         before(function*() {
-          const genericModelSaved = yield addGenericModel()
+          const genericModelSaved = yield GenericClassMock.add({ organization_id: organization.id })
 
           let modelAttributes = {
             idAttribute: ['enrollment', 'cpf']
@@ -1458,7 +1425,7 @@ describe('GenericModel', () => {
         let genericModel, idObject
 
         before(function*() {
-          const genericModelSaved = yield addGenericModel()
+          const genericModelSaved = yield GenericClassMock.add({ organization_id: organization.id })
 
           let modelAttributes = {
             idAttribute: ['enrollment', 'cpf']
@@ -1507,7 +1474,7 @@ describe('GenericModel', () => {
         let genericModel, idObject
 
         before(function*() {
-          const genericModelSaved = yield addGenericModel()
+          const genericModelSaved = yield GenericClassMock.add({ organization_id: organization.id })
 
           let modelAttributes = {
             idAttribute   : ['enrollment', 'cpf'],
@@ -1590,7 +1557,7 @@ describe('GenericModel', () => {
         let genericModelCompositePK
 
         before(function*() {
-          const genericModelSaved = yield addGenericModel()
+          const genericModelSaved = yield GenericClassMock.add({ organization_id: organization.id })
 
           let modelAttributes = {
             idAttribute: ['enrollment', 'cpf']
@@ -1622,7 +1589,7 @@ describe('GenericModel', () => {
         let genericModelCompositePK
 
         before(function*() {
-          const genericModelSaved = yield addGenericModel()
+          const genericModelSaved = yield GenericClassMock.add({ organization_id: organization.id })
 
           let modelAttributes = {
             idAttribute: ['enrollment', 'cpf']
@@ -1658,7 +1625,7 @@ describe('GenericModel', () => {
         let genericModelCompositePK
 
         before(function*() {
-          const genericModelSaved = yield addGenericModel()
+          const genericModelSaved = yield GenericClassMock.add({ organization_id: organization.id })
 
           let modelAttributes = {
             idAttribute: ['enrollment', 'cpf']

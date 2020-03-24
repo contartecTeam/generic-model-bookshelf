@@ -1,6 +1,25 @@
 'use strict'
 
+/**
+ * Generic mock class for `bookshelf` models
+ * @class GenericModelMock
+ *
+ * TODO - Change instance to static methods
+*/
 class GenericModelMock {
+  get DEFAULT_ADD_OPTIONS() {
+    return {
+      withRelated: true
+    }
+  }
+
+  get DEFAULT_ADD_LIST_OPTIONS() {
+    return {
+      length      : 3,
+      withRelated : false
+    }
+  }
+
   constructor (model, defaultObject) {
     this.model = model
     this._modelInstance = Reflect.construct(model, [{}])
@@ -9,6 +28,13 @@ class GenericModelMock {
     this._defaultObject = defaultObject
   }
 
+  /**
+   * Returns a mock
+   *
+   * @param {Object} object The `object` to set the returned mock
+   *
+   * @return {Object} The mock object
+  */
   create(object) {
     object = Object
       .assign({}, this.defaultObject, object || {})
@@ -17,6 +43,32 @@ class GenericModelMock {
       .construct(this.model, [object])
 
     return modelObject
+  }
+
+  getMock(object) {
+    return this.create(object)
+  }
+
+  getMocks (params = {}, length = 3) {
+    const mocks = []
+
+    for (var i = length - 1; i >= 0; i--)
+      mocks.push(this.create(params))
+
+    return mocks
+  }
+
+  getIdMock() {
+    return Math.round(Math.random() * 999999)
+  }
+
+  getIdMocks(length = 3) {
+    const ids = []
+
+    for (var i = length - 1; i >= 0; i--)
+      ids.push(this.getIdMock())
+
+    return ids
   }
 
   createObject(object) {
@@ -75,6 +127,114 @@ class GenericModelMock {
     return db(this.tableName)
       .whereRaw(`${idAttribute} IN (${queryBuilder.toString()})`)
       .del()
+  }
+
+  /**
+   * Returns the `model`'s related `ids` attrs
+   * @async
+   * @override
+   *
+   * @return {Object} The `model`'s related ids
+  */
+  getRelatedAttrs() {
+    return {}
+  }
+
+
+  /**
+   * Inserts a random `Model`
+   * @async
+   *
+   * @param {Object} attrs The `Object` attrs to set the `object`
+   * @param {Object} options The creation options
+   * @param {Object} options.withRelated Whether add random `relateds` relations or not
+   *
+   * @return {Object} The `Model` object
+  */
+  async add(attrs = {}, options = {}) {
+    const optionsTemp = { ...this.DEFAULT_ADD_OPTIONS, ...options }
+
+    let paramsTemp = { ...attrs }
+
+    if (optionsTemp.withRelated) {
+      const relatedAttrs = await this.getRelatedAttrs()
+
+      paramsTemp = { ...relatedAttrs, ...paramsTemp }
+    }
+
+    return this
+      .insertDefault(
+        this
+          .create(paramsTemp)
+          .toJSON({ virtuals: false, shallow: true })
+      )
+  }
+
+  /**
+   * Inserts the `mocks`
+   * @async
+   *
+   * @param {Array<Generic> | Object} params The object `params` to set in every mock or a list of `mocks`
+   * @param {Number} [length = 3] The number of `mocks` to be created
+   *
+   * @return {Array<Generic>} The list of created `mocks`
+  */
+  async addList(params, options = {}) {
+    const optionsTemp = { ...this.DEFAULT_ADD_LIST_OPTIONS, ...options }
+
+    let paramsTemp = { ...params }
+
+    if (['number', 'string'].includes(typeof(options)))
+      optionsTemp.length = options
+
+    if (optionsTemp.withRelated) {
+      const relatedAttrs = await this.getRelatedAttrs()
+
+      paramsTemp = { ...relatedAttrs, ...paramsTemp }
+    }
+
+    const mocks = params instanceof Array ?
+      [ ...params ] :
+      this.getMocks(paramsTemp, optionsTemp.length)
+
+    const promises = mocks
+      .map(m => {
+        return this
+          .insertDefault(m.toJSON({ virtuals: false, shallow: true }))
+      })
+
+    return await Promise.all(promises)
+  }
+
+  /**
+   * Deletes a list
+   * @async
+   *
+   * @param {(Array<Number> | Array<Object> | Number | Object)} objects The list of `objects` to remove from `db`
+   *
+   * @return {Number}
+  */
+  async deleteList(objects) {
+    if (objects && !(objects instanceof Array))
+      objects = [objects]
+
+    let ids = []
+
+    if (objects.length) {
+      if (typeof(objects[0]) == 'object') {
+        ids = objects
+          .map(t => t.id)
+      }
+      else
+        ids = [ ...objects ]
+
+      await this
+        .delete({
+          id_in: ids
+        })
+    }
+
+    return this
   }
 
   get defaultObject () { return this._defaultObject }
