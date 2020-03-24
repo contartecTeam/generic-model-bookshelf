@@ -140,25 +140,25 @@ workflows:
       - checkout_code
 
       - node_dependencies:
-        requires:
-          - checkout_code
+          requires:
+            - checkout_code
 
       - tests:
-        requires:
-          - node_dependencies
+          requires:
+            - node_dependencies
 
       - test_coverage_upload:
-        requires:
-          - tests
+          requires:
+            - tests
 
       - approval:
-        filters:
-          branches:
-            only: master
-        type: approval
-        requires:
-          - tests
+          filters:
+            branches:
+              only: master
+          type: approval
+          requires:
+            - tests
 
       - npm_publish:
-        requires:
-          - approval
+          requires:
+            - approval
