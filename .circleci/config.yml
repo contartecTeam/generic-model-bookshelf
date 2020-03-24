@@ -5,7 +5,7 @@ jobs:
     working_directory: /home/circleci/generic-model-bookshelf
 
     docker:
-      - image: hallais/nodejs:node:10.14
+      - image: circleci/node:10.14
 
     steps:
       - checkout
