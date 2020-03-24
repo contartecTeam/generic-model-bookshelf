@@ -1,6 +1,6 @@
 {
   "name": "generic-model-bookshelf",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Generic model for bookshelf (ORM)",
   "main": "lib/GenericModel.js",
   "directories": {
@@ -18,6 +18,10 @@
     "test:watch": "cross-env TZ=UTC NODE_ENV=test npm run migrate && npm run lint && npm run mocha -- --watch",
     "test:coverage": "cross-env NODE_ENV=test nyc --reporter=text-summary --reporter=lcov --reporter=cobertura --report-dir=./coverage --reporter=html npm run mocha -- --reporter=min --exit",
     "update:docs": "npm run docs && git add docs/. && git diff-index --quiet HEAD || git commit -m 'Updating `docs`'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://contartec@github.com/contartec/generic-model-bookshelf.git"
   },
   "keywords": [
     "node",
