@@ -3,6 +3,11 @@
   "version": "0.1.0",
   "description": "Generic model for bookshelf (ORM)",
   "main": "lib/GenericModel.js",
+  "directories": {
+    "lib": "./lib",
+    "doc": "./docs",
+    "test": "./tests"
+  },
   "scripts": {
     "lint": "cross-env NODE_ENV=test eslint -c ./.eslintrc.json \"lib/**/*.js\" \"tests/**/*.js\"",
     "docs": "documentation build lib/** -f html -o docs",
@@ -21,7 +26,7 @@
     "generic",
     "model"
   ],
-  "author": "pantoja",
+  "author": "contartec",
   "license": "MIT",
   "dependencies": {
     "@ourwork/object-utils": "https://github.com/hallais/ObjectUtils.git#3faca126e4ea1f4a3fa925b7ebacb84c7636f97e",
@@ -32,9 +37,7 @@
     "documentation": "^11.0.0",
     "deep-diff": "^1.0.2",
     "deep-equal": "^1.1.1",
-    "husky": "^2.3.0",
     "jsdoc": "^3.6.2",
-    "nyc": "^14.1.1",
     "moment": "^2.18.1"
   },
   "devDependencies": {
