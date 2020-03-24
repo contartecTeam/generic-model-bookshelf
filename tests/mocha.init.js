@@ -15,7 +15,8 @@ chai.use(require('sinon-chai'))
 global.sinon = require('sinon')
 global.expect = chai.expect
 
-require('dotenv').config({ path: 'tests/db/.env' })
+if (!process.env.TEST_DB)
+  require('dotenv').config({ path: 'tests/db/.env' })
 
 const bookshelf = require('./config/bookshelf')
 
