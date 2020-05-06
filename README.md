@@ -1,8 +1,8 @@
 Generic model for bookshelf (ORM)
 
-[![CircleCI](https://circleci.com/gh/contartec/generic-model-bookshelf.svg?style=shield&circle-token=f1be2be4eb8aa4b7c442ff62d5a503ed0bfe902f)](https://circleci.com/gh/contartec/generic-model-bookshelf)
-[![Maintainability](https://api.codeclimate.com/v1/badges/a524a1af2400086f26a8/maintainability)](https://codeclimate.com/github/contartec/generic-model-bookshelf/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/a524a1af2400086f26a8/test_coverage)](https://codeclimate.com/github/contartec/generic-model-bookshelf/test_coverage)
+[![CircleCI](https://circleci.com/gh/contartecTeam/generic-model-bookshelf.svg?style=shield&circle-token=d6d998aacfa991b668a4ff634f08773ae53e9321)](https://circleci.com/gh/contartecTeam/generic-model-bookshelf)
+[![Maintainability](https://api.codeclimate.com/v1/badges/395d7bc2adfd44a1019d/maintainability)](https://codeclimate.com/github/contartecTeam/generic-model-bookshelf/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/395d7bc2adfd44a1019d/test_coverage)](https://codeclimate.com/github/contartecTeam/generic-model-bookshelf/test_coverage)
 [![npm version](https://badge.fury.io/js/generic-model-bookshelf.svg)](https://badge.fury.io/js/generic-model-bookshelf)
 
 ## Install
@@ -11,4 +11,4 @@ Generic model for bookshelf (ORM)
 
 ## Docs
 
-https://contartec.github.io/generic-model-bookshelf/
+https://contartecteam.github.io/generic-model-bookshelf/
