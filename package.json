@@ -21,7 +21,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://contartec@github.com/contartec/generic-model-bookshelf.git"
+    "url": "git+https://github.com/contartec-team/generic-model-bookshelf.git"
   },
   "keywords": [
     "node",
