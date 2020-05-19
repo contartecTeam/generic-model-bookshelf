@@ -6,10 +6,7 @@ const bookshelf = require('bookshelf')(knex)
 
 bookshelf.ModelBase = require('bookshelf-modelbase')(bookshelf)
 
-bookshelf.plugin('registry')
-bookshelf.plugin('pagination')
-bookshelf.plugin('visibility')
-bookshelf.plugin('virtuals')
+bookshelf.plugin('bookshelf-virtuals-plugin')
 bookshelf.plugin(require('bookshelf-soft-delete'))
 bookshelf.plugin(require('bookshelf-modelbase').pluggable)
 

@@ -110,7 +110,6 @@ describe('GenericModel', () => {
         modelAttributes = Object
           .assign({}, GenericClass.DEFAULT_ATTRIBUTES, modelAttributes)
 
-
         genericModel = new GenericModel(
           modelAttributes,
           Object
@@ -1337,19 +1336,25 @@ describe('GenericModel', () => {
   })
 
   describe('#destroy', () => {
-    let genericModelTemp
+    let genericModel
 
-    before(function*() {
-      genericModelTemp = yield new GenericModel(GenericClass.DEFAULT_ATTRIBUTES, createGenericClassMock(organization.id))
+    before(async () => {
+      const mock = createGenericClassMock(organization.id)
+
+      genericModel = await new GenericModel(GenericClass.DEFAULT_ATTRIBUTES, mock)
         .save()
+
+      const genericModelTemp = await new GenericModel(GenericClass.DEFAULT_ATTRIBUTES)
+        .where('id', genericModel.id)
+        .fetch()
+
+      await genericModelTemp
+        .destroy()
     })
 
-    it('should destroy the genericModel', function*() {
-      yield genericModelTemp
-        .destroy()
-
-      const genericModelTempDeleted = yield new GenericModel(GenericClass.DEFAULT_ATTRIBUTES)
-        .where('id', genericModelTemp.id)
+    it('should delete the `genericModel`', async () => {
+      const genericModelTempDeleted = await new GenericModel(GenericClass.DEFAULT_ATTRIBUTES)
+        .where('id', genericModel.id)
         .fetch()
 
       expect(genericModelTempDeleted).to.not.exist
@@ -1357,7 +1362,6 @@ describe('GenericModel', () => {
   })
 
   describe('#delete', () => {
-
     context('when the model has soft delete', () => {
       let genericModel
 
@@ -1420,7 +1424,6 @@ describe('GenericModel', () => {
     })
 
     context('when the model has a composite primary key', () => {
-
       context('and has soft delete', () => {
         let genericModel, idObject
 
@@ -1775,7 +1778,6 @@ describe('GenericModel', () => {
     })
 
     context('when constraints not in use', () => {
-
       context('and genericModel has no id', () => {
         it('should return false', function*() {
           const areConstraintsValids = yield genericModelNotPersisted
@@ -1793,19 +1795,17 @@ describe('GenericModel', () => {
     before(() => {
       genericModelNameNull = new GenericModel(
         GenericClass.DEFAULT_ATTRIBUTES,
-        Object
-          .assign({}, defaultObject, {name: null})
+        { ...defaultObject, name: null }
       )
 
       genericModelOrganizationIdNull = new GenericModel(
         GenericClass.DEFAULT_ATTRIBUTES,
-        Object
-          .assign({}, defaultObject, {organization_id: null})
+        { ...defaultObject, organization_id: null }
       )
     })
 
     context('when valid', () => {
-      it('should return null', function*() {
+      it('should return `null`', () => {
         const validation = genericModel
           .validation()
 
@@ -1813,8 +1813,8 @@ describe('GenericModel', () => {
       })
     })
 
-    context('when name is null', () => {
-      it('should return a validation message error', function*() {
+    context('when name is `null`', () => {
+      it('should return a validation message error', () => {
         const validation = genericModelNameNull
           .validation()
 
@@ -1822,8 +1822,8 @@ describe('GenericModel', () => {
       })
     })
 
-    context('when organization_id is null', () => {
-      it('should return a validation message error', function*() {
+    context('when organization_id is `null`', () => {
+      it('should return a validation message error', () => {
         const validation = genericModelOrganizationIdNull
           .validation()
 
@@ -1838,19 +1838,17 @@ describe('GenericModel', () => {
     before(() => {
       genericModelNameNull = new GenericModel(
         GenericClass.DEFAULT_ATTRIBUTES,
-        Object
-          .assign({}, defaultObject, {name: null})
+        { ...defaultObject, name: null }
       )
 
       genericModelOrganizationIdNull = new GenericModel(
         GenericClass.DEFAULT_ATTRIBUTES,
-        Object
-          .assign({}, defaultObject, {organization_id: null})
+        { ...defaultObject, organization_id: null }
       )
     })
 
     context('when valid', () => {
-      it('should return null', function*() {
+      it('should return `null`', () => {
         const isObjectValid = genericModel
           .isObjectValid()
 
@@ -1858,8 +1856,8 @@ describe('GenericModel', () => {
       })
     })
 
-    context('when name is null', () => {
-      it('should return false', function*() {
+    context('when name is `null`', () => {
+      it('should return false', () => {
         const isObjectValid = genericModelNameNull
           .isObjectValid()
 
@@ -1867,8 +1865,8 @@ describe('GenericModel', () => {
       })
     })
 
-    context('when organization_id is null', () => {
-      it('should return false', function*() {
+    context('when organization_id is `null`', () => {
+      it('should return false', () => {
         const isObjectValid = genericModelOrganizationIdNull
           .isObjectValid()
 
@@ -1878,17 +1876,8 @@ describe('GenericModel', () => {
   })
 
   describe('#toJSON', () => {
-
-    it('should return the json object', function*() {
-      const genericModelJSON = genericModel
-        .toJSON()
-
-      expect(genericModelJSON).to.exist
-    })
-
-    context('when there\'s virtual properties', () => {
-
-      it('should contain the virtual property', function*() {
+    context('when there are virtual properties', () => {
+      it('should contain the virtual property', () => {
         const genericModelJSON = genericModel
           .toJSON()
 
@@ -1896,8 +1885,7 @@ describe('GenericModel', () => {
       })
 
       context('when virtuals:false is passed', () => {
-
-        it('should not contain any virtual property', function*() {
+        it('should not contain any virtual property', () => {
           const genericModelJSON = genericModel
             .toJSON({ virtuals: false, shallow: true })
 
@@ -1906,7 +1894,7 @@ describe('GenericModel', () => {
       })
     })
 
-    context('when there\'s pivot properties', () => {
+    context('when there are pivot properties', () => {
       let pivotName, pivot, genericModel
 
       before(() => {
@@ -1918,12 +1906,11 @@ describe('GenericModel', () => {
 
         genericModel = new GenericModel(
           GenericClass.DEFAULT_ATTRIBUTES,
-          Object
-            .assign(createGenericClassMock(), pivot)
+          { ...createGenericClassMock(), ...pivot }
         )
       })
 
-      it('should contain the pivot property', function*() {
+      it('should contain the pivot property', () => {
         const genericModelJSON = genericModel
           .toJSON()
 
@@ -1931,13 +1918,21 @@ describe('GenericModel', () => {
       })
 
       context('when omitPivot:true is passed', () => {
-
-        it('should not contain any pivot property', function*() {
+        it('should not contain any pivot property', () => {
           const genericModelJSON = genericModel
             .toJSON({ omitPivot: true, shallow: true })
 
           expect(genericModelJSON).to.not.have.property(pivotName)
         })
+      })
+    })
+
+    context('when there are no virtual properties', () => {
+      it('should return the json object', () => {
+        const genericModelJSON = genericModel
+          .toJSON()
+
+        expect(genericModelJSON).to.exist
       })
     })
   })
