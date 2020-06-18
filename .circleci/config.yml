@@ -139,6 +139,12 @@ jobs:
       - image: circleci/node:10.14
 
     steps:
+      - restore_cache:
+          key: repo-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+
+      - restore_cache:
+          key: node-cache-{{ .Branch }}-{{ checksum "package.json" }}
+
       - run:
           name: Release version
           command: npm run semantic-release || true
