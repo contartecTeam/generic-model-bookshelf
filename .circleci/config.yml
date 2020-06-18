@@ -5,7 +5,7 @@ jobs:
     working_directory: /home/circleci/generic-model-bookshelf
 
     docker:
-      - image: circleci/node:10.14
+      - image: circleci/node:10.18
 
     steps:
       - checkout
@@ -19,7 +19,7 @@ jobs:
     working_directory: /home/circleci/generic-model-bookshelf
 
     docker:
-      - image: circleci/node:10.14
+      - image: circleci/node:10.18
 
     steps:
       - restore_cache:
@@ -90,7 +90,7 @@ jobs:
     working_directory: /home/circleci/generic-model-bookshelf
 
     docker:
-      - image: circleci/node:10.14
+      - image: circleci/node:10.18
 
     steps:
       - restore_cache:
@@ -115,7 +115,7 @@ jobs:
   #   working_directory: /home/circleci/generic-model-bookshelf
 
   #   docker:
-  #     - image: circleci/node:10.14
+  #     - image: circleci/node:10.18
 
   #   steps:
   #     - restore_cache:
@@ -136,7 +136,7 @@ jobs:
     working_directory: /home/circleci/generic-model-bookshelf
 
     docker:
-      - image: circleci/node:10.14
+      - image: circleci/node:10.18
 
     steps:
       - restore_cache:
