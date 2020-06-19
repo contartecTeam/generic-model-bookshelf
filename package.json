@@ -17,7 +17,7 @@
     "test": "cross-env TZ=UTC NODE_ENV=test npm run migrate && npm run lint && npm run test:coverage",
     "test:watch": "cross-env TZ=UTC NODE_ENV=test npm run migrate && npm run lint && npm run mocha -- --watch",
     "test:coverage": "cross-env NODE_ENV=test nyc --reporter=text-summary --reporter=lcov --reporter=cobertura --report-dir=./coverage --reporter=html npm run mocha -- --reporter=min --exit",
-    "update:docs": "npm run docs && git add docs/. && git diff-index --quiet HEAD || git commit -m 'docs: Updating `docs`'",
+    "update:docs": "npm run docs && git add docs/. && git diff-index --quiet HEAD || git commit -m 'docs: updating `docs`'",
     "commit": "npx git-cz",
     "semantic-release": "semantic-release"
   },
