@@ -18,8 +18,8 @@
     "test:watch": "cross-env TZ=UTC NODE_ENV=test npm run migrate && npm run lint && npm run mocha -- --watch",
     "test:coverage": "cross-env NODE_ENV=test nyc --reporter=text-summary --reporter=lcov --reporter=cobertura --report-dir=./coverage --reporter=html npm run mocha -- --reporter=min --exit",
     "update:docs": "npm run docs && git add docs/. && git diff-index --quiet HEAD || git commit -m 'docs: updating `docs`'",
-    "commit": "npx git-cz",
-    "semantic-release": "semantic-release"
+    "update-version": "node -e 'require(\"@contartec-team/version-release\").updateVersion()'",
+    "release-version": "node -e 'require(\"@contartec-team/version-release\").releaseVersion()'"
   },
   "repository": {
     "type": "git",
@@ -45,11 +45,7 @@
     "validate.js": "^0.11.1"
   },
   "devDependencies": {
-    "@commitlint/cli": "^8.3.5",
-    "@commitlint/config-conventional": "^8.3.4",
-    "@commitlint/prompt": "^8.3.5",
-    "@semantic-release/changelog": "^5.0.1",
-    "@semantic-release/git": "^9.0.0",
+    "@contartec-team/version-release": "git+https://github.com/contartec-team/version-release.git",
     "bookshelf": "1.1.x",
     "bookshelf-modelbase": "^2.10.1",
     "bookshelf-soft-delete": "^3.3.0",
@@ -60,7 +56,6 @@
     "co": "^4.6.0",
     "co-mocha": "^1.1.3",
     "codecov": "^3.5.0",
-    "commitizen": "^4.1.2",
     "cross-env": "^5.2.0",
     "documentation": "^11.0.0",
     "eslint": "^5.16.0",
@@ -71,14 +66,12 @@
     "mocha-lcov-reporter": "^1.3.0",
     "nyc": "^14.1.1",
     "pg": "^4.5.7",
-    "semantic-release": "^17.0.8",
     "sinon": "^1.17.5",
     "sinon-as-promised": "^4.0.2",
     "sinon-chai": "^2.8.0"
   },
   "husky": {
     "hooks": {
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
       "pre-push": "npm run lint && npm run update:docs"
     }
   },

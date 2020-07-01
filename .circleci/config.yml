@@ -132,22 +132,39 @@ jobs:
   #         name: Publishing package
   #         command: npm publish
 
+  npm_version:
+      working_directory: /home/circleci/generic-model-bookshelf
+
+      docker:
+        - image: circleci/node:10.18
+
+      steps:
+        - restore_cache:
+            key: repo-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+
+        - restore_cache:
+            key: node-cache-{{ .Branch }}-{{ checksum "package.json" }}
+
+        - run:
+            name    : Updating version
+            command : npm run update-version
+
   npm_release:
-    working_directory: /home/circleci/generic-model-bookshelf
+      working_directory: /home/circleci/generic-model-bookshelf
 
-    docker:
-      - image: circleci/node:10.18
+      docker:
+        - image: circleci/node:10.18
 
-    steps:
-      - restore_cache:
-          key: repo-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+      steps:
+        - restore_cache:
+            key: repo-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
 
-      - restore_cache:
-          key: node-cache-{{ .Branch }}-{{ checksum "package.json" }}
+        - restore_cache:
+            key: node-cache-{{ .Branch }}-{{ checksum "package.json" }}
 
-      - run:
-          name: Release version
-          command: npm run semantic-release || true
+        - run:
+            name    : Releasing and publishing version
+            command : npm run release-version
 workflows:
   version: 2
 
@@ -168,13 +185,20 @@ workflows:
             - tests
 
       - approval:
-          filters:
+          filters   :
             branches:
-              only: master
-          type: approval
-          requires:
+              ignore: master
+          type      : approval
+          requires  :
             - tests
 
-      - npm_release:
+      - npm_version:
           requires:
             - approval
+
+      - npm_release:
+          filters   :
+            branches:
+              only: master
+          requires:
+            - tests
