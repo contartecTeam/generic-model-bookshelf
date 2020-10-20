@@ -13,11 +13,11 @@ const GenericClassMock = require('./mocks/GenericClassMock')
 describe('GenericModel', () => {
   let genericModel, defaultObject, organization, genericClass
 
-  before(function*() {
-    organization = yield GenericRelatedPersistedMock
+  before(async () => {
+    organization = await GenericRelatedPersistedMock
       .insertDefault()
 
-    genericClass = yield GenericClassMock
+    genericClass = await GenericClassMock
       .insertDefault({
         organization_id: organization.id
       })
@@ -1102,8 +1102,10 @@ describe('GenericModel', () => {
 
       genericModelNotPersisted = new GenericModel(
         GenericClass.DEFAULT_ATTRIBUTES,
-        Object
-          .assign(createGenericClassMock(), { id: Math.round(Math.random() * 999999) })
+        {
+          ...createGenericClassMock(),
+          id: Math.round(Math.random() * 999999)
+        }
       )
     })
 
