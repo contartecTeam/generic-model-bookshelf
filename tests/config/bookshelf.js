@@ -1,7 +1,6 @@
 'use strict'
 
-const knex = require('knex')(require('../db/knexfile.js')['test'])
-
+const knex = require('knex')(require('../../knexfile.js')['test'])
 const bookshelf = require('bookshelf')(knex)
 
 bookshelf.ModelBase = require('bookshelf-modelbase')(bookshelf)
