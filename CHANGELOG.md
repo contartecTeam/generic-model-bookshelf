@@ -1,3 +1,10 @@
+## 0.3.0 (2020-10-20)
+
+
+### Features
+
+* Add configuração através de `static get GENERIC_MODEL_PARAMS() {}`
+
 ## [0.2.1](https://github.com/contartec-team/generic-model-bookshelf/compare/v0.2.0...v0.2.1) (2020-06-19)
 
 
