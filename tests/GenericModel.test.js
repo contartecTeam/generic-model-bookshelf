@@ -1093,6 +1093,35 @@ describe('GenericModel', () => {
     })
   })
 
+  describe('.findById', () => {
+    it('should return the `genericModel`', async () => {
+      const genericModelItem = await GenericClass
+        .findById(genericClass.id)
+
+      expect(genericModelItem.toJSON()).to.shallowDeepEqual(genericClass.toJSON())
+    })
+
+    context('when there\'s related models', () => {
+      it('should return the passed relateds of `genericModel`', async () => {
+        const genericModelItem = await GenericClass
+          .findById(genericClass.id, { withRelated: ['generic_related_persisted'] })
+
+        const relatedModel = genericModelItem.related('generic_related_persisted')
+
+        expect(relatedModel.toJSON()).to.shallowDeepEqual(organization.toJSON())
+      })
+    })
+
+    context('when there\'s no model with the passed id', () => {
+      it('should return `null`', async () => {
+        const genericModelItem = await GenericClass
+          .findById('46848464')
+
+        expect(genericModelItem).to.not.exist
+      })
+    })
+  })
+
   describe('.isPersisted', () => {
     let genericModelPersisted, genericModelNotPersisted
 
@@ -1265,38 +1294,6 @@ describe('GenericModel', () => {
 
           expect(relatedModel.toJSON()).to.shallowDeepEqual(organization.toJSON())
         })
-      })
-    })
-  })
-
-  describe('#findById', () => {
-
-    it('should return the genericModel', function*() {
-      const genericModelItem = yield new GenericModel(GenericClass.DEFAULT_ATTRIBUTES)
-        .findById(genericClass.id)
-
-      expect(genericModelItem.toJSON()).to.shallowDeepEqual(genericClass.toJSON())
-    })
-
-    context('when there\'s related models', () => {
-
-      it('should return the passed relateds of genericModel', function*() {
-        const genericModelItem = yield new GenericModel(GenericClass.DEFAULT_ATTRIBUTES)
-          .findById(genericClass.id, { withRelated: ['generic_related_persisted'] })
-
-        const relatedModel = genericModelItem.related('generic_related_persisted')
-
-        expect(relatedModel.toJSON()).to.shallowDeepEqual(organization.toJSON())
-      })
-    })
-
-    context('when there\'s no model with the passed id', () => {
-
-      it('should return null', function*() {
-        const genericModelItem = yield new GenericModel(GenericClass.DEFAULT_ATTRIBUTES)
-          .findById('46848464')
-
-        expect(genericModelItem).to.not.exist
       })
     })
   })
