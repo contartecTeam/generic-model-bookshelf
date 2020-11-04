@@ -1,6 +1,6 @@
 {
   "name": "generic-model-bookshelf",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Generic model for bookshelf (ORM)",
   "main": "lib/GenericModel.js",
   "directories": {
@@ -35,10 +35,8 @@
   "author": "contartec",
   "license": "MIT",
   "dependencies": {
-    "@ourwork/object-utils": "https://github.com/hallais/ObjectUtils.git#3faca126e4ea1f4a3fa925b7ebacb84c7636f97e",
+    "@contartec-team/object-utils": "https://github.com/contartec-team/object-utils.git",
     "bookshelf-virtuals-plugin": "^0.1.1",
-    "deep-diff": "^1.0.2",
-    "deep-equal": "^1.1.1",
     "dotenv": "^1.2.0",
     "moment": "^2.18.1",
     "validate.js": "^0.11.1"
