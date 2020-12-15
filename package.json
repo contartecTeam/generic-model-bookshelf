@@ -48,7 +48,7 @@
     "bookshelf-modelbase": "^2.10.1",
     "bookshelf-soft-delete": "^3.3.0",
     "chai": "^3.5.0",
-    "chai-as-promised": "^5.3.0",
+    "chai-as-promised": "^7.1.1",
     "chai-shallow-deep-equal": "^1.4.6",
     "chai-things": "^0.2.0",
     "co": "^4.6.0",
