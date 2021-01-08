@@ -39,7 +39,7 @@
     "bookshelf-virtuals-plugin": "^0.1.1",
     "dotenv": "^1.2.0",
     "moment": "^2.18.1",
-    "validate.js": "^0.11.1"
+    "validate.js": "^0.13.1"
   },
   "devDependencies": {
     "@contartec-team/git-hooks": "git+https://github.com/contartec-team/git-hooks.git",
