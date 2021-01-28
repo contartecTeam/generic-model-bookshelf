@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
   <meta charset='utf-8'>
   <title>generic-model-bookshelf 0.4.0 | Documentation</title>
@@ -20,6 +20,9 @@
             placeholder='Filter'
             id='filter-input'
             class='col12 block input'
+            spellcheck='false'
+            autocapitalize='off'
+            autocorrect='off'
             type='text' />
           <div id='toc'>
             <ul class='list-reset h5 py1-ul'>
@@ -38,9 +41,15 @@
                     <li class='h5'><span>Static members</span></li>
                     
                       <li><a
-                        href='#genericmodel'
+                        href='#genericmodeldefault_generic_model_params'
                         class='regular pre-open'>
-                        .
+                        .DEFAULT_GENERIC_MODEL_PARAMS
+                      </a></li>
+                    
+                      <li><a
+                        href='#genericmodeldefault_generic_model_params'
+                        class='regular pre-open'>
+                        .DEFAULT_GENERIC_MODEL_PARAMS
                       </a></li>
                     
                       <li><a
@@ -53,12 +62,6 @@
                         href='#genericmodelmodel_params'
                         class='regular pre-open'>
                         .MODEL_PARAMS
-                      </a></li>
-                    
-                      <li><a
-                        href='#genericmodeldefault_generic_model_params'
-                        class='regular pre-open'>
-                        .DEFAULT_GENERIC_MODEL_PARAMS
                       </a></li>
                     
                       <li><a
@@ -117,17 +120,6 @@
                     
                     </ul>
                   
-                  
-                    <ul class='list-reset py1-ul pl1'>
-                      <li class='h5'><span>Instance members</span></li>
-                      
-                      <li><a
-                        href='#genericmodelconstructor'
-                        class='regular pre-open'>
-                        #constructor
-                      </a></li>
-                      
-                    </ul>
                   
                   
                   
@@ -235,14 +227,16 @@
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Static Members</div>
     <div class="clearfix">
   
-    <div class='border-bottom' id='genericmodel'>
+    <div class='border-bottom' id='genericmodeldefault_generic_model_params'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'></span>
+            <span class='code strong strong truncate'>DEFAULT_GENERIC_MODEL_PARAMS</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -252,7 +246,7 @@
 
   <p>A mix of <code>bookshelf</code> and custom options (override this with the desired one)</p>
 
-    <div class='pre p1 fill-light mt0'></div>
+    <div class='pre p1 fill-light mt0'>DEFAULT_GENERIC_MODEL_PARAMS</div>
   
     <p>
       Type:
@@ -291,108 +285,6 @@
         </div>
       
     </div>
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='genericmodelgeneric_model_params'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>GENERIC_MODEL_PARAMS</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>A mix of <code>bookshelf</code> and custom options (override this with the desired one)</p>
-
-    <div class='pre p1 fill-light mt0'>GENERIC_MODEL_PARAMS</div>
-  
-    <p>
-      Type:
-      GenericModelParams
-    </p>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='genericmodelmodel_params'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>MODEL_PARAMS</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>The <code>GenericModel</code> params used internally</p>
-
-    <div class='pre p1 fill-light mt0'>MODEL_PARAMS</div>
-  
-    <p>
-      Type:
-      GenericModelParams
-    </p>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
   
 
   
@@ -479,6 +371,116 @@
   
 
   
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='genericmodelgeneric_model_params'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>GENERIC_MODEL_PARAMS</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>A mix of <code>bookshelf</code> and custom options (override this with the desired one)</p>
+
+    <div class='pre p1 fill-light mt0'>GENERIC_MODEL_PARAMS</div>
+  
+    <p>
+      Type:
+      GenericModelParams
+    </p>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='genericmodelmodel_params'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>MODEL_PARAMS</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>The <code>GenericModel</code> params used internally</p>
+
+    <div class='pre p1 fill-light mt0'>MODEL_PARAMS</div>
+  
+    <p>
+      Type:
+      GenericModelParams
+    </p>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
 </section>
 
       </div>
@@ -531,6 +533,8 @@
   
 
   
+
+  
 </section>
 
       </div>
@@ -564,6 +568,8 @@
   
   
   
+  
+
   
 
   
@@ -740,6 +746,8 @@
   
 
   
+
+  
 </section>
 
       </div>
@@ -798,6 +806,8 @@
 
       
     
+  
+
   
 
   
@@ -897,6 +907,8 @@
   
 
   
+
+  
 </section>
 
       </div>
@@ -978,6 +990,8 @@
   
 
   
+
+  
 </section>
 
       </div>
@@ -1036,6 +1050,8 @@
 
       
     
+  
+
   
 
   
@@ -1164,6 +1180,8 @@
   
 
   
+
+  
 </section>
 
       </div>
@@ -1252,88 +1270,6 @@
   
 
   
-</section>
-
-      </div>
-    </div>
-  
-</div>
-
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Instance Members</div>
-    <div class="clearfix">
-  
-    <div class='border-bottom' id='genericmodelconstructor'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>new constructor(properties, object)</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  
-    <div class='pre p1 fill-light mt0'>new constructor(properties: GenericModelParams, object: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</div>
-  
-  
-
-  <div>Deprecated: Use 
-<code>static get GENERIC_MODEL_PARAMS()</code>
- instead
-</div>
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>properties</span> <code class='quiet'>(GenericModelParams)</code>
-	    The 
-<code>model</code>
- properties
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>object</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</code>
-	    The 
-<code>model</code>
- object
-
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
 
   
 </section>
@@ -1342,6 +1278,8 @@
     </div>
   
 </div>
+
+  
 
   
 
@@ -1377,6 +1315,8 @@
   
   
   
+  
+
   
 
   
@@ -1468,6 +1408,8 @@
   
 
   
+
+  
 </section>
 
       </div>
@@ -1532,16 +1474,18 @@
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> attrNames = [<span class="hljs-string">'la'</span>, <span class="hljs-string">'le'</span>, <span class="hljs-string">'li'</span>]
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> attrNames = [<span class="hljs-string">&#x27;la&#x27;</span>, <span class="hljs-string">&#x27;le&#x27;</span>, <span class="hljs-string">&#x27;li&#x27;</span>]
 
 QueryBuilderUtils.getAttrsOperators(attrNames)
-<span class="hljs-comment">// ['la_start', 'la_end', ..., 'le_end', 'le_like', ..., 'li_likeIgnoreCase', 'li_in', ...]</span>
+<span class="hljs-comment">// [&#x27;la_start&#x27;, &#x27;la_end&#x27;, ..., &#x27;le_end&#x27;, &#x27;le_like&#x27;, ..., &#x27;li_likeIgnoreCase&#x27;, &#x27;li_in&#x27;, ...]</span>
 
-QueryBuilderUtils.getAttrsOperators(<span class="hljs-string">'la'</span>)
-<span class="hljs-comment">// ['la_start', 'la_end', 'la_like', 'la_likeIgnoreCase', ...]</span></pre>
+QueryBuilderUtils.getAttrsOperators(<span class="hljs-string">&#x27;la&#x27;</span>)
+<span class="hljs-comment">// [&#x27;la_start&#x27;, &#x27;la_end&#x27;, &#x27;la_like&#x27;, &#x27;la_likeIgnoreCase&#x27;, ...]</span></pre>
     
   
 
@@ -1616,13 +1560,15 @@ QueryBuilderUtils.getAttrsOperators(<span class="hljs-string">'la'</span>)
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> attrName = <span class="hljs-string">'la'</span>
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> attrName = <span class="hljs-string">&#x27;la&#x27;</span>
 
-QueryBuilderUtils.getAttrOperators(<span class="hljs-string">'la'</span>)
-<span class="hljs-comment">// ['la_start', 'la_end', 'la_like', 'la_likeIgnoreCase', ...]</span>
+QueryBuilderUtils.getAttrOperators(<span class="hljs-string">&#x27;la&#x27;</span>)
+<span class="hljs-comment">// [&#x27;la_start&#x27;, &#x27;la_end&#x27;, &#x27;la_like&#x27;, &#x27;la_likeIgnoreCase&#x27;, ...]</span>
 
 QueryBuilderUtils.getAttrOperators(<span class="hljs-literal">null</span>)
 <span class="hljs-comment">// []</span></pre>
@@ -1700,6 +1646,8 @@ QueryBuilderUtils.getAttrOperators(<span class="hljs-literal">null</span>)
 
       
     
+  
+
   
 
   
