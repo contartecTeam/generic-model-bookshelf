@@ -27,6 +27,13 @@ describe('GenericModel', () => {
     genericModel = new GenericModel(GenericClass.DEFAULT_ATTRIBUTES, defaultObject)
   })
 
+  /**
+   * Returns a class mock
+   *
+   * @param {Number} organizationId The `model` id
+   *
+   * @return {Object} The generic mock class
+  */
   function createGenericClassMock(organizationId) {
     return GenericClassMock
       .createObject({
@@ -342,6 +349,14 @@ describe('GenericModel', () => {
       }
     })
 
+    /**
+     * Returns the `queryBuilder` object
+     *
+     * @param {Object} params The filter params
+     * @param {Object} model The `model` object
+     *
+     * @return {Object} The `knex` `queryBuilder` object
+    */
     function getQueryBuilder(params, model) {
       if (!model)
         model = genericModel
@@ -799,33 +814,34 @@ describe('GenericModel', () => {
   describe('.getAll', () => {
     const DEFAULT_FETCH_PARAMS = { withRelated: GenericClass.relateds }
 
-    context('when filtered by organization', () => {
+    context('when filtered by `organization`', () => {
       let DEFAULT_PARAMS
 
-      before(function*() {
+      before(async () => {
         DEFAULT_PARAMS = {
           organization_id: genericClass.get('organization_id'),
         }
 
-        yield GenericClassMock.addList({
-          role : 0,
-          organization_id: organization.id
-        }, 3)
+        await GenericClassMock
+          .addList({
+            organization_id : organization.id,
+            role            : 0
+          })
 
-        yield GenericClassMock.addList({
-          role : 1,
-          organization_id: organization.id
-        }, 3)
+        await GenericClassMock
+          .addList({
+            organization_id : organization.id,
+            role            : 1
+          })
       })
 
-      it('should return the list of objects', function*() {
-        const params = Object
-          .assign({}, DEFAULT_PARAMS)
+      it('should return the list of objects', async () => {
+        const params = { ...DEFAULT_PARAMS }
 
-        const objectsTemp = yield GenericClass
+        const objectsTemp = await GenericClass
           .getAll({ ...params, orderBy: 'name' })
 
-        const objects = yield GenericClass
+        const objects = await GenericClass
           .where(params)
           .orderBy('name')
           .fetchAll(DEFAULT_FETCH_PARAMS)
@@ -833,18 +849,20 @@ describe('GenericModel', () => {
         expect(objectsTemp.toJSON()).to.deep.equal(objects.toJSON())
       })
 
-      context('and pageSize is 2', () => {
-        it('should return 2 objects', function*() {
-          const params = Object
-            .assign({}, DEFAULT_PARAMS, { orderBy: 'name', pageSize  : 2 })
+      context('and `pageSize` is 2', () => {
+        it('should return 2 objects', async () => {
+          const params = {
+            ...DEFAULT_PARAMS,
+            orderBy   : 'name',
+            pageSize  : 2
+          }
 
-          const queryParams = Object
-            .assign({}, DEFAULT_PARAMS)
+          const queryParams = { ...DEFAULT_PARAMS }
 
-          const objectsTemp = yield GenericClass
+          const objectsTemp = await GenericClass
             .getAll(params)
 
-          const objects = yield GenericClass
+          const objects = await GenericClass
             .where(queryParams)
             .orderBy('name')
             .fetchAll(DEFAULT_FETCH_PARAMS)
@@ -854,12 +872,14 @@ describe('GenericModel', () => {
         })
       })
 
-      context('and page is 2', () => {
-        it('should return the objects of page 2', function*() {
-          const params = Object
-            .assign({}, DEFAULT_PARAMS, { page  : 2 })
+      context('and `page` is 2', () => {
+        it('should return the objects of page 2', async () => {
+          const params = {
+            ...DEFAULT_PARAMS,
+            page: 2
+          }
 
-          const objectsTemp = yield GenericClass
+          const objectsTemp = await GenericClass
             .getAll(params)
 
           expect(objectsTemp).to.have.lengthOf(0)
@@ -867,14 +887,16 @@ describe('GenericModel', () => {
       })
 
       context('and role', () => {
-        it('should return the list of objects', function*() {
-          const params = Object
-            .assign({}, DEFAULT_PARAMS, { role: genericClass.get('role') })
+        it('should return the list of objects', async () => {
+          const params = {
+            ...DEFAULT_PARAMS,
+            role: genericClass.get('role')
+          }
 
-          const objectsTemp = yield GenericClass
-            .getAll({ ...params, orderBy: 'name'})
+          const objectsTemp = await GenericClass
+            .getAll({ ...params, orderBy: 'name' })
 
-          const objects = yield GenericClass
+          const objects = await GenericClass
             .where(params)
             .orderBy('name')
             .fetchAll(DEFAULT_FETCH_PARAMS)
@@ -883,33 +905,32 @@ describe('GenericModel', () => {
         })
       })
 
-      context('and genericSearch', () => {
+      context('and `genericSearch`', () => {
         context('by name', () => {
           const ATTR = 'name'
 
-          it('should return the list of objects', function*() {
+          it('should return the list of objects', async () => {
             const genericSearch = genericClass
               .get(ATTR)
               .substring(0, 3)
 
-            const params = Object
-              .assign({}, DEFAULT_PARAMS, { genericSearch: genericSearch })
+            const params = {
+              ...DEFAULT_PARAMS,
+              genericSearch: genericSearch
+            }
 
-            const queryParams = Object
-              .assign({}, DEFAULT_PARAMS)
+            const queryParams = { ...DEFAULT_PARAMS }
 
-            const objectsTemp = yield GenericClass
+            const objectsTemp = await GenericClass
               .getAll(params)
 
-            const objects = yield GenericClass
-              .query(
-                q => {
-                  q
-                    .where(queryParams)
-                    .where(ATTR, 'like', `${genericSearch}%`)
-                    .orderBy('name')
-                }
-              )
+            const objects = await GenericClass
+              .query(q => {
+                q
+                  .where(queryParams)
+                  .where(ATTR, 'like', `${genericSearch}%`)
+                  .orderBy('name')
+              })
               .fetchAll(DEFAULT_FETCH_PARAMS)
 
             expect(objectsTemp.length).to.have.at.least(objects.length)
@@ -919,29 +940,28 @@ describe('GenericModel', () => {
         context('by cpf', () => {
           const ATTR = 'cpf'
 
-          it('should return the employees', function*() {
+          it('should return the employees', async () => {
             const genericSearch = genericClass
               .get(ATTR)
               .substring(0, 3)
 
-            const params = Object
-              .assign({}, DEFAULT_PARAMS, { genericSearch: genericSearch })
+            const params = {
+              ...DEFAULT_PARAMS,
+              genericSearch: genericSearch
+            }
 
-            const queryParams = Object
-              .assign({}, DEFAULT_PARAMS)
+            const queryParams = { ...DEFAULT_PARAMS }
 
-            const objectsTemp = yield GenericClass
+            const objectsTemp = await GenericClass
               .getAll(params)
 
-            const objects = yield GenericClass
-              .query(
-                q => {
-                  q
-                    .where(queryParams)
-                    .where(ATTR, 'like', `${genericSearch}%`)
-                    .orderBy('name')
-                }
-              )
+            const objects = await GenericClass
+              .query(q => {
+                q
+                  .where(queryParams)
+                  .where(ATTR, 'like', `${genericSearch}%`)
+                  .orderBy('name')
+              })
               .fetchAll(DEFAULT_FETCH_PARAMS)
 
             expect(objectsTemp.length).to.have.at.least(objects.length)
@@ -951,29 +971,28 @@ describe('GenericModel', () => {
         context('by enrollment', () => {
           const ATTR = 'enrollment'
 
-          it('should return the list of objects', function*() {
+          it('should return the list of objects', async () => {
             const genericSearch = genericClass
               .get(ATTR)
               .substring(0, 3)
 
-            const params = Object
-              .assign({}, DEFAULT_PARAMS, { genericSearch: genericSearch })
+            const params = {
+              ...DEFAULT_PARAMS,
+              genericSearch: genericSearch
+            }
 
-            const queryParams = Object
-              .assign({}, DEFAULT_PARAMS)
+            const queryParams = { ...DEFAULT_PARAMS }
 
-            const objectsTemp = yield GenericClass
+            const objectsTemp = await GenericClass
               .getAll(params)
 
-            const objects = yield GenericClass
-              .query(
-                q => {
-                  q
-                    .where(queryParams)
-                    .where(ATTR, 'like', `${genericSearch}%`)
-                    .orderBy('name')
-                }
-              )
+            const objects = await GenericClass
+              .query(q => {
+                q
+                  .where(queryParams)
+                  .where(ATTR, 'like', `${genericSearch}%`)
+                  .orderBy('name')
+              })
               .fetchAll(DEFAULT_FETCH_PARAMS)
 
             expect(objectsTemp.length).to.have.at.least(objects.length)
@@ -984,33 +1003,34 @@ describe('GenericModel', () => {
   })
 
   describe('.getCount', () => {
-    context('when filtered by organization', () => {
+    context('when filtered by `organization`', () => {
       let DEFAULT_PARAMS
 
-      before(function*() {
+      before(async () => {
         DEFAULT_PARAMS = {
           organization_id: genericClass.get('organization_id')
         }
 
-        yield GenericClassMock.addList({
-          role : 0,
-          organization_id: organization.id
-        }, 3)
+        await GenericClassMock
+          .addList({
+            organization_id : organization.id,
+            role            : 0
+          }, 3)
 
-        yield GenericClassMock.addList({
-          role : 1,
-          organization_id: organization.id
-        }, 3)
+        await GenericClassMock
+          .addList({
+            organization_id : organization.id,
+            role            : 1
+          }, 3)
       })
 
-      it('should return the list of objects', function*() {
-        const params = Object
-          .assign({}, DEFAULT_PARAMS)
+      it('should return the list of objects', async () => {
+        const params = { ...DEFAULT_PARAMS }
 
-        const countObjectsTemp = yield GenericClass
+        const countObjectsTemp = await GenericClass
           .getCount(params)
 
-        const countObjects = yield GenericClass
+        const countObjects = await GenericClass
           .where(params)
           .count()
 
@@ -1018,14 +1038,16 @@ describe('GenericModel', () => {
       })
 
       context('and role', () => {
-        it('should return the total of objects', function*() {
-          const params = Object
-            .assign({}, DEFAULT_PARAMS, { role: genericClass.get('role') })
+        it('should return the total of objects', async () => {
+          const params = {
+            ...DEFAULT_PARAMS,
+            role: genericClass.get('role')
+          }
 
-          const countObjectsTemp = yield GenericClass
+          const countObjectsTemp = await GenericClass
             .getCount(params)
 
-          const countObjects = yield GenericClass
+          const countObjects = await GenericClass
             .where(params)
             .count()
 
@@ -1036,33 +1058,34 @@ describe('GenericModel', () => {
   })
 
   describe('.getOne', () => {
-    context('when filtered by organization', () => {
+    context('when filtered by `organization`', () => {
       let DEFAULT_PARAMS
 
-      before(function*() {
+      before(async () => {
         DEFAULT_PARAMS = {
           organization_id: genericClass.get('organization_id')
         }
 
-        yield GenericClassMock.addList({
-          role : 0,
-          organization_id: organization.id
-        }, 3)
+        await GenericClassMock
+          .addList({
+            organization_id : organization.id,
+            role            : 0
+          })
 
-        yield GenericClassMock.addList({
-          role : 1,
-          organization_id: organization.id
-        }, 3)
+        await GenericClassMock
+          .addList({
+            organization_id : organization.id,
+            role            : 1
+          })
       })
 
-      it('should return the object', function*() {
-        const params = Object
-          .assign({}, DEFAULT_PARAMS)
+      it('should return the object', async () => {
+        const params = { ...DEFAULT_PARAMS }
 
-        const objectOneTemp = yield GenericClass
+        const objectOneTemp = await GenericClass
           .getOne({ ...params, orderBy: { name: 'ASC' }})
 
-        const objectOne = yield GenericClass
+        const objectOne = await GenericClass
           .where(params)
           .orderBy('name')
           .fetch({
@@ -1073,14 +1096,16 @@ describe('GenericModel', () => {
       })
 
       context('and role', () => {
-        it('should return the object', function*() {
-          const params = Object
-            .assign({}, DEFAULT_PARAMS, { role: genericClass.get('role') })
+        it('should return the object', async () => {
+          const params = {
+            ...DEFAULT_PARAMS,
+            role: genericClass.get('role')
+          }
 
-          const objectOneTemp = yield GenericClass
+          const objectOneTemp = await GenericClass
             .getOne({ ...params, orderBy: { name: 'ASC' }})
 
-          const objectOne = yield GenericClass
+          const objectOne = await GenericClass
             .where(params)
             .orderBy('name')
             .fetch({
@@ -1361,75 +1386,102 @@ describe('GenericModel', () => {
   })
 
   describe('#delete', () => {
-    context('when the model has soft delete', () => {
-      let genericModel
+    context('when the model has a `single primary key`', () => {
+      context('when the model has `soft delete`', () => {
+        let genericModel
 
-      before(function*() {
-        genericModel = yield new GenericModel(GenericClass.DEFAULT_ATTRIBUTES, createGenericClassMock(organization.id))
-          .save()
+        before(async () => {
+          const attrs = {
+            ...GenericClass.DEFAULT_ATTRIBUTES,
+            restored_at: new Date()
+          }
 
-        yield genericModel
-          .delete()
+          genericModel = new GenericModel(
+            attrs,
+            createGenericClassMock(organization.id)
+          )
+
+          await genericModel
+            .save()
+
+          await genericModel
+            .delete()
+        })
+
+        it('should not remove the `model` from the database', async () => {
+          const genericModelDeleted = await new GenericModel(GenericClass.DEFAULT_ATTRIBUTES)
+            .where('id', genericModel.id)
+            .fetch({
+              softDelete: false
+            })
+
+          expect(genericModelDeleted).to.exist
+        })
+
+        it('should set `deleted_at`', async () => {
+          const genericModelDeleted = await new GenericModel(GenericClass.DEFAULT_ATTRIBUTES)
+            .where('id', genericModel.id)
+            .fetch({
+              softDelete: false
+            })
+
+          expect(genericModelDeleted.get('deleted_at')).to.exist
+        })
+
+        it('should set `restored_at` to `null`', async () => {
+          const genericModelDeleted = await new GenericModel(GenericClass.DEFAULT_ATTRIBUTES)
+            .where('id', genericModel.id)
+            .fetch({
+              softDelete: false
+            })
+
+          expect(genericModelDeleted.get('restored_at')).to.not.exist
+        })
       })
 
-      it('should not remove the genericModel from the database', function*() {
-        const genericModelDeleted = yield new GenericModel(GenericClass.DEFAULT_ATTRIBUTES)
-          .where('id', genericModel.id)
-          .fetch({
-            softDelete: false
-          })
+      context('when the model has no `soft delete`', () => {
+        let genericModel
 
-        expect(genericModelDeleted).to.exist
-      })
+        before(async () => {
+          const modelAttributes = {
+            ...GenericClass.DEFAULT_ATTRIBUTES,
+            soft: false
+          }
 
-      it('should set "deleted_at" to the genericModel', function*() {
-        const genericModelDeleted = yield new GenericModel(GenericClass.DEFAULT_ATTRIBUTES)
-          .where('id', genericModel.id)
-          .fetch({
-            softDelete: false
-          })
+          genericModel = new GenericModel(
+            modelAttributes,
+            createGenericClassMock(organization.id)
+          )
 
-        expect(genericModelDeleted.get('deleted_at')).to.exist
+          await genericModel
+            .save()
+
+          await genericModel
+            .delete()
+        })
+
+        it('should remove the `genericModel` from the database', async () => {
+          const genericModelDeleted = await new GenericModel(GenericClass.DEFAULT_ATTRIBUTES)
+            .where('id', genericModel.id)
+            .fetch({
+              softDelete: false
+            })
+
+          expect(genericModelDeleted).to.not.exist
+        })
       })
     })
 
-    context('when the model has no soft delete', () => {
-      let genericModel
-
-      before(function*() {
-        let modelAttributes = {
-          soft: false
-        }
-
-        modelAttributes = Object
-          .assign({}, GenericClass.DEFAULT_ATTRIBUTES, modelAttributes)
-
-        genericModel = yield new GenericModel(modelAttributes, createGenericClassMock(organization.id))
-          .save()
-
-        yield genericModel
-          .delete()
-      })
-
-      it('should remove the genericModel from the database', function*() {
-        const genericModelDeleted = yield new GenericModel(GenericClass.DEFAULT_ATTRIBUTES)
-          .where('id', genericModel.id)
-          .fetch({
-            softDelete: false
-          })
-
-        expect(genericModelDeleted).to.not.exist
-      })
-    })
-
-    context('when the model has a composite primary key', () => {
-      context('and has soft delete', () => {
+    context('when the model has a `composite primary key`', () => {
+      context('and has `soft delete`', () => {
         let genericModel, idObject
 
-        before(function*() {
-          const genericModelSaved = yield GenericClassMock.add({ organization_id: organization.id })
+        before(async () => {
+          const genericModelSaved = await GenericClassMock
+            .add({ organization_id: organization.id })
 
-          let modelAttributes = {
+          const modelAttributes = {
+            ...GenericClass.DEFAULT_ATTRIBUTES,
             idAttribute: ['enrollment', 'cpf']
           }
 
@@ -1438,21 +1490,17 @@ describe('GenericModel', () => {
           for (var i = 0; i < modelAttributes.idAttribute.length; i++)
             idObject[modelAttributes.idAttribute[i]] = genericModelSaved.get(modelAttributes.idAttribute[i])
 
-          modelAttributes = Object
-            .assign({}, GenericClass.DEFAULT_ATTRIBUTES, modelAttributes)
-
           genericModel = new GenericModel(
             modelAttributes,
-            Object
-              .assign({}, genericModelSaved.toJSON(), idObject)
+            { ...genericModelSaved.toJSON(), ...idObject }
           )
 
-          yield genericModel
+          await genericModel
             .delete()
         })
 
-        it('should not remove the genericModel from the database', function*() {
-          const genericModelDeleted = yield new GenericModel(GenericClass.DEFAULT_ATTRIBUTES)
+        it('should not remove the `genericModel` from the database', async () => {
+          const genericModelDeleted = await new GenericModel(GenericClass.DEFAULT_ATTRIBUTES)
             .where(genericModel.id)
             .fetch({
               softDelete: false
@@ -1461,8 +1509,8 @@ describe('GenericModel', () => {
           expect(genericModelDeleted).to.exist
         })
 
-        it('should set "deleted_at" to the genericModel', function*() {
-          const genericModelDeleted = yield new GenericModel(GenericClass.DEFAULT_ATTRIBUTES)
+        it('should set `deleted_at` to the `genericModel`', async () => {
+          const genericModelDeleted = await new GenericModel(GenericClass.DEFAULT_ATTRIBUTES)
             .where(genericModel.id)
             .fetch({
               softDelete: false
@@ -1472,15 +1520,17 @@ describe('GenericModel', () => {
         })
       })
 
-      context('and has no soft delete', () => {
+      context('and has no `soft delete`', () => {
         let genericModel, idObject
 
-        before(function*() {
-          const genericModelSaved = yield GenericClassMock.add({ organization_id: organization.id })
+        before(async () => {
+          const genericModelSaved = await GenericClassMock
+            .add({ organization_id: organization.id })
 
-          let modelAttributes = {
-            idAttribute   : ['enrollment', 'cpf'],
-            soft          : false
+          const modelAttributes = {
+            ...GenericClass.DEFAULT_ATTRIBUTES,
+            idAttribute : ['enrollment', 'cpf'],
+            soft        : false
           }
 
           idObject = {}
@@ -1488,29 +1538,25 @@ describe('GenericModel', () => {
           for (var i = 0; i < modelAttributes.idAttribute.length; i++)
             idObject[modelAttributes.idAttribute[i]] = genericModelSaved.get(modelAttributes.idAttribute[i])
 
-          modelAttributes = Object
-            .assign({}, GenericClass.DEFAULT_ATTRIBUTES, modelAttributes)
-
           genericModel = new GenericModel(
             modelAttributes,
-            Object
-              .assign({}, genericModelSaved.toJSON(), idObject)
+            { ...genericModelSaved.toJSON(), ...idObject }
           )
 
-          yield genericModel
+          await genericModel
             .delete()
         })
 
-        it('should delete the genericModel', function*() {
-          const genericModelDeleted = yield new GenericModel(GenericClass.DEFAULT_ATTRIBUTES)
+        it('should delete the `genericModel`', async () => {
+          const genericModelDeleted = await new GenericModel(GenericClass.DEFAULT_ATTRIBUTES)
             .where(genericModel.id)
             .fetch()
 
           expect(genericModelDeleted).to.not.exist
         })
 
-        it('should remove the genericModel from the database', function*() {
-          const genericModelDeleted = yield new GenericModel(GenericClass.DEFAULT_ATTRIBUTES)
+        it('should remove the `genericModel` from the database', async () => {
+          const genericModelDeleted = await new GenericModel(GenericClass.DEFAULT_ATTRIBUTES)
             .where(genericModel.id)
             .fetch({
               softDelete: false
