@@ -1,3 +1,10 @@
+## 0.4.1 (2021-01-28)
+
+
+### Code Refactoring
+
+* [`GenericModel`] Alterar `#deleted` para marcar `restored_at: null`
+
 ## 0.4.0 (2020-11-04)
 
 
