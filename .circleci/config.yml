@@ -5,7 +5,7 @@ jobs:
     working_directory: /home/circleci/generic-model-bookshelf
 
     docker:
-      - image: circleci/node:10.18
+      - image: circleci/node:12
 
     steps:
       - checkout
@@ -19,7 +19,7 @@ jobs:
     working_directory: /home/circleci/generic-model-bookshelf
 
     docker:
-      - image: circleci/node:10.18
+      - image: circleci/node:12
 
     steps:
       - restore_cache:
@@ -41,13 +41,13 @@ jobs:
     working_directory: /home/circleci/generic-model-bookshelf
 
     docker:
-      - image: hallais/nodejs:0.8.0
+      - image: circleci/node:12
 
       - image: postgres:9.5
         environment:
-          - POSTGRES_USER : ubuntu
-          - POSTGRES_PASSWORD : randomPasswd
-          - POSTGRES_DB   : test_generic_model
+          POSTGRES_USER     : ubuntu
+          POSTGRES_PASSWORD : randomPasswd
+          POSTGRES_DB       : test_generic_model
 
     steps:
 
@@ -65,11 +65,11 @@ jobs:
           name    : Running tests
           command : npm run test
           environment :
-          - PG_HOST             : localhost
-          - PG_USER             : ubuntu
-          - PG_PASSWORD         : randomPasswd
-          - TEST_HOST           : 127.0.0.1
-          - TEST_DB             : test_generic_model
+            PG_HOST     : localhost
+            PG_USER     : ubuntu
+            PG_PASSWORD : randomPasswd
+            TEST_HOST   : 127.0.0.1
+            TEST_DB     : test_generic_model
 
       - store_artifacts:
           path    : test-results.xml
@@ -90,7 +90,7 @@ jobs:
     working_directory: /home/circleci/generic-model-bookshelf
 
     docker:
-      - image: circleci/node:10.18
+      - image: circleci/node:12
 
     steps:
       - restore_cache:
@@ -115,7 +115,7 @@ jobs:
       working_directory: /home/circleci/generic-model-bookshelf
 
       docker:
-        - image: circleci/node:10.18
+        - image: circleci/node:12
 
       steps:
         - restore_cache:
@@ -132,7 +132,7 @@ jobs:
       working_directory: /home/circleci/generic-model-bookshelf
 
       docker:
-        - image: circleci/node:10.18
+        - image: circleci/node:12
 
       steps:
         - restore_cache:
@@ -149,7 +149,7 @@ jobs:
     working_directory: /home/circleci/generic-model-bookshelf
 
     docker:
-      - image: circleci/node:10.18
+      - image: circleci/node:12
 
     steps:
       - restore_cache:
@@ -174,6 +174,8 @@ workflows:
       - checkout_code
 
       - node_dependencies:
+          context:
+            - github
           requires:
             - checkout_code
 
@@ -194,6 +196,8 @@ workflows:
             - tests
 
       - npm_version:
+          context:
+            - github
           requires:
             - approval
 
@@ -201,6 +205,8 @@ workflows:
           filters:
             branches:
               only: master
+          context:
+            - github
           requires:
             - tests
 

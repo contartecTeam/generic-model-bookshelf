@@ -50,6 +50,8 @@
         "destructuring": "any",
         "ignoreReadBeforeAssign": false
       }
-    ]
+    ],
+    "require-jsdoc": ["error"],
+    "valid-jsdoc": "error"
   }
 }

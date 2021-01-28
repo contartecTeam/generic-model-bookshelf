@@ -1,6 +1,6 @@
 {
   "name": "generic-model-bookshelf",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Generic model for bookshelf (ORM)",
   "main": "lib/GenericModel.js",
   "directories": {
@@ -37,9 +37,9 @@
   "dependencies": {
     "@contartec-team/object-utils": "https://github.com/contartec-team/object-utils.git",
     "bookshelf-virtuals-plugin": "^0.1.1",
-    "dotenv": "^1.2.0",
-    "moment": "^2.18.1",
-    "validate.js": "^0.11.1"
+    "dotenv": "^8.2.0",
+    "moment": "^2.29.1",
+    "validate.js": "^0.13.0"
   },
   "devDependencies": {
     "@contartec-team/git-hooks": "git+https://github.com/contartec-team/git-hooks.git",
@@ -48,23 +48,23 @@
     "bookshelf-modelbase": "^2.10.1",
     "bookshelf-soft-delete": "^3.3.0",
     "chai": "^3.5.0",
-    "chai-as-promised": "^5.3.0",
+    "chai-as-promised": "^7.1.1",
     "chai-shallow-deep-equal": "^1.4.6",
     "chai-things": "^0.2.0",
     "co": "^4.6.0",
     "co-mocha": "^1.1.3",
     "codecov": "^3.5.0",
-    "cross-env": "^5.2.0",
-    "documentation": "^11.0.0",
+    "cross-env": "^7.0.3",
+    "documentation": "^13.0.0",
     "eslint": "^5.16.0",
     "husky": "^3.0.5",
     "jsdoc": "^3.6.2",
     "knex": "0.21.x",
-    "knex-cleaner": "^1.1.3",
+    "knex-cleaner": "^1.3.1",
     "mocha": "^6.1.4",
     "mocha-lcov-reporter": "^1.3.0",
-    "nyc": "^14.1.1",
-    "pg": "^4.5.7",
+    "nyc": "^15.1.0",
+    "pg": "^8.5.1",
     "sinon": "^9.0.2",
     "sinon-as-promised": "^4.0.2",
     "sinon-chai": "^3.5.0"
