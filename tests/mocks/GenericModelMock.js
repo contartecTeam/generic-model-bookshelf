@@ -1,10 +1,9 @@
 'use strict'
 
+// TODO: Change instance to static methods
 /**
  * Generic mock class for `bookshelf` models
  * @class GenericModelMock
- *
- * TODO - Change instance to static methods
 */
 class GenericModelMock {
   get DEFAULT_ADD_OPTIONS() {
@@ -175,7 +174,9 @@ class GenericModelMock {
    * @async
    *
    * @param {Array<Generic> | Object} params The object `params` to set in every mock or a list of `mocks`
-   * @param {Number} [length = 3] The number of `mocks` to be created
+   * @param {Object} [options] The `mocks` options
+   * @param {Number} [options.length = 3] The number of `mocks` to be created
+   * @param {Boolean} [options.withRelated = false] Whether it should create (aka insert) the required model relations (aka its `required` `FKs`)
    *
    * @return {Array<Generic>} The list of created `mocks`
   */
@@ -212,7 +213,7 @@ class GenericModelMock {
    *
    * @param {(Array<Number> | Array<Object> | Number | Object)} objects The list of `objects` to remove from `db`
    *
-   * @return {Number}
+   * @return {Object}  this
   */
   async deleteList(objects) {
     if (objects && !(objects instanceof Array))
