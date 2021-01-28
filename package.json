@@ -36,7 +36,7 @@
   "license": "MIT",
   "dependencies": {
     "@contartec-team/object-utils": "https://github.com/contartec-team/object-utils.git",
-    "bookshelf-virtuals-plugin": "^0.1.1",
+    "bookshelf-virtuals-plugin": "^1.0.0",
     "dotenv": "^8.2.0",
     "moment": "^2.29.1",
     "validate.js": "^0.13.0"
