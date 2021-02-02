@@ -1,3 +1,10 @@
+## 0.4.2 (2021-02-02)
+
+
+### Code Refactoring
+
+* [`QueryBuilderUtils`] Add teste
+
 ## 0.4.1 (2021-01-28)
 
 
