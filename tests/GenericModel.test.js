@@ -999,6 +999,31 @@ describe('GenericModel', () => {
           })
         })
       })
+
+      context('and `groupBy` `role`', () => {
+        it('should return the list of objects', async () => {
+          const groupBy = ['id', 'role']
+          const params = {
+            ...DEFAULT_PARAMS,
+            groupBy
+          }
+
+          const queryParams = { ...DEFAULT_PARAMS }
+
+          const objectsTemp = await GenericClass
+            .getAll(params)
+
+          const objects = await GenericClass
+            .query(q => {
+              q
+                .where(queryParams)
+                .groupBy(groupBy)
+            })
+            .fetchAll(DEFAULT_FETCH_PARAMS)
+
+          expect(objectsTemp.toJSON()).to.deep.equal(objects.toJSON())
+        })
+      })
     })
   })
 
@@ -1052,6 +1077,29 @@ describe('GenericModel', () => {
             .count()
 
           expect(countObjectsTemp).to.be.equal(parseInt(countObjects))
+        })
+      })
+
+      context('and `countDistinct` is `role`', () => {
+        it('should return the total by `role`', async () => {
+          const countDistinct = 'role'
+          const params = {
+            ...DEFAULT_PARAMS,
+            countDistinct
+          }
+
+          const countObjectsTemp = await GenericClass
+            .getCount(params)
+
+          const countObjects = await GenericClass
+            .query(q => {
+              q
+                .where(DEFAULT_PARAMS)
+                .countDistinct(countDistinct)
+            })
+            .fetch()
+
+          expect(countObjectsTemp).to.be.equal(parseInt(countObjects.get('count')))
         })
       })
     })

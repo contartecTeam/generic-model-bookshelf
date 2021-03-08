@@ -1,3 +1,10 @@
+## 0.4.3 (2021-03-08)
+
+
+### Code Refactoring
+
+* [`GenericModel`] Add `groupBy` no `.getAll`
+
 ## 0.4.2 (2021-02-02)
 
 

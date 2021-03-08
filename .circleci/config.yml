@@ -29,6 +29,10 @@ jobs:
           key: node-cache-{{ .Branch }}-{{ checksum "package.json" }}
 
       - run:
+          name    : Authenticating with github registry
+          command : npm config set '//npm.pkg.github.com/:_authToken' "${GH_TOKEN}"
+
+      - run:
           name    : Installing npm dependencies
           command : npm install
 
@@ -86,31 +90,6 @@ jobs:
           key   : test-coverage-cache-{{ .Environment.CIRCLE_SHA1 }}
           paths : ./coverage
 
-  test_coverage_upload:
-    working_directory: /home/circleci/generic-model-bookshelf
-
-    docker:
-      - image: circleci/node:12
-
-    steps:
-      - restore_cache:
-          key: repo-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
-
-      - restore_cache:
-          key: test-coverage-cache-{{ .Environment.CIRCLE_SHA1 }}
-
-      - run:
-          name:  Downloading cc-test-reporter
-          command: |
-            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./coverage/cc-test-reporter
-            chmod +x ./coverage/cc-test-reporter
-
-      - run:
-          name    : Uploading test coverage
-          command : |
-            ./coverage/cc-test-reporter format-coverage -t lcov -o coverage/codeclimate.coverage.json coverage/lcov.info
-            ./coverage/cc-test-reporter upload-coverage -i coverage/codeclimate.coverage.json
-
   npm_version:
       working_directory: /home/circleci/generic-model-bookshelf
 
@@ -160,7 +139,7 @@ jobs:
 
       - run:
           name: Authenticating with registry
-          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
+          command: echo "//registry.npmjs.org/:_authToken=$GH_TOKEN" > .npmrc
 
       - run:
           name: Publishing package
@@ -182,10 +161,6 @@ workflows:
       - tests:
           requires:
             - node_dependencies
-
-      - test_coverage_upload:
-          requires:
-            - tests
 
       - approval:
           filters:

@@ -1,6 +1,6 @@
 {
   "name": "generic-model-bookshelf",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "Generic model for bookshelf (ORM)",
   "main": "lib/GenericModel.js",
   "directories": {
@@ -43,7 +43,7 @@
   },
   "devDependencies": {
     "@contartec-team/git-hooks": "git+https://github.com/contartec-team/git-hooks.git",
-    "@contartec-team/version-release": "git+https://github.com/contartec-team/version-release.git",
+    "@contartec-team/version-release": "^0.1.0",
     "bookshelf": "1.1.x",
     "bookshelf-modelbase": "^2.10.1",
     "bookshelf-soft-delete": "^3.3.0",
@@ -56,7 +56,7 @@
     "codecov": "^3.5.0",
     "cross-env": "^7.0.3",
     "documentation": "^13.0.0",
-    "eslint": "^5.16.0",
+    "eslint": "^7.20.0",
     "husky": "^3.0.5",
     "jsdoc": "^3.6.2",
     "knex": "0.21.x",
