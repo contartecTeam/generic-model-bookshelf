@@ -162,10 +162,6 @@ workflows:
           requires:
             - node_dependencies
 
-      - test_coverage_upload:
-          requires:
-            - tests
-
       - approval:
           filters:
             branches:
