@@ -1,6 +1,6 @@
 {
   "name": "generic-model-bookshelf",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "description": "Generic model for bookshelf (ORM)",
   "main": "lib/GenericModel.js",
   "directories": {

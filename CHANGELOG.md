@@ -1,3 +1,10 @@
+## 0.4.4 (2021-03-08)
+
+
+### Code Refactoring
+
+* [`GenericModel`] Refatorar `#areConstraintsValids`
+
 ## 0.4.3 (2021-03-08)
 
 
