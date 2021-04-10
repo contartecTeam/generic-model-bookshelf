@@ -199,9 +199,16 @@ class GenericModelMock {
       this.getMocks(paramsTemp, optionsTemp.length)
 
     const promises = mocks
-      .map(m => {
+      .map(mock => {
+        const mockJSON = mock
+          .toJSON({
+            virtuals    : false,
+            shallow     : true,
+            formatType  : 'format'
+          })
+
         return this
-          .insertDefault(m.toJSON({ virtuals: false, shallow: true }))
+          .insertDefault(mockJSON)
       })
 
     return await Promise.all(promises)
