@@ -175,8 +175,8 @@ describe('GenericModel', () => {
         expect(genericModel.get(pivotName)).to.eql(pivot[pivotName])
       })
 
-      it('should not contain the pivot attribute in toJSON method', () => {
-        expect(genericModel.toJSON()).to.not.have.property(pivotName)
+      it('should contain the pivot attribute in toJSON method', () => {
+        expect(genericModel.toJSON()).to.have.property(pivotName)
       })
     })
 
@@ -784,7 +784,7 @@ describe('GenericModel', () => {
             const relatedIdAttribute = `${relatedModelData.foreignKey || relatedModelData.parentIdAttribute}`
 
             const queryBuilder = getQueryBuilder(DEFAULT_PARAMS)
-            const relatedQueryBuild = getQueryBuilder(RELATED_MODEL_PARAMS[relatedModelName], new relatedModelData.target())
+            const relatedQuery = getQueryBuilder(RELATED_MODEL_PARAMS[relatedModelName], new relatedModelData.target())
               .toString()
               .split('where')[1]
 
@@ -802,7 +802,7 @@ describe('GenericModel', () => {
                 `${relatedModelData.targetTableName}.${relatedModelData.targetIdAttribute}`,
                 `${tableName}.${relatedModelData.key('otherKey')}`
               )
-              .whereRaw(relatedQueryBuild)
+              .whereRaw(relatedQuery)
 
             expect(queryBuilderTemp.toString()).to.eql(queryBuilder.toString())
           })
