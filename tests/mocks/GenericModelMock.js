@@ -1,5 +1,7 @@
 'use strict'
 
+const { knex } = global.bookshelfInstance
+
 // TODO: Change instance to static methods
 /**
  * Generic mock class for `bookshelf` models
@@ -80,7 +82,7 @@ class GenericModelMock {
       if (!object)
         object = this.createObject()
 
-      db(this.tableName)
+      knex(this.tableName)
         .insert(object, this.idColumnName)
         .then(queryResult => {
           if (queryResult.constructor.name == 'Array')
@@ -123,7 +125,7 @@ class GenericModelMock {
     queryBuilder
       .select(idAttribute)
 
-    return db(this.tableName)
+    return knex(this.tableName)
       .whereRaw(`${idAttribute} IN (${queryBuilder.toString()})`)
       .del()
   }
