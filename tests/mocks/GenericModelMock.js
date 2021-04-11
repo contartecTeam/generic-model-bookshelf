@@ -8,12 +8,22 @@ const { knex } = global.bookshelfInstance
  * @class GenericModelMock
 */
 class GenericModelMock {
+  /**
+   * Default options for `bookshelf`'s `save` operation used in [`add`]{@link GenericModelMock.add}
+   * @override
+   * @type {Object}
+  */
   get DEFAULT_ADD_OPTIONS() {
     return {
       withRelated: true
     }
   }
 
+  /**
+   * Default options for `bookshelf`'s `save` operation used in [`addList`]{@link GenericModelMock.addList}
+   * @override
+   * @type {Object}
+  */
   get DEFAULT_ADD_LIST_OPTIONS() {
     return {
       length      : 3,
@@ -21,6 +31,21 @@ class GenericModelMock {
     }
   }
 
+  /**
+   * The mock object to be used as default in `getMock`, `getMocks`, `add`, `addList`, etc
+   * @override
+   * @type {Object}
+  */
+  get defaultObject () { return this._defaultObject }
+
+  /**
+   * Creates a `mock` for `model`
+   *
+   * @param {GenericModel} model The `model` class
+   * @param {Object} defaultObject The default object for this mock
+   *
+   * @return {Object} The `model` instance
+  */
   constructor (model, defaultObject) {
     this.model = model
     this._modelInstance = Reflect.construct(model, [{}])
@@ -30,26 +55,24 @@ class GenericModelMock {
   }
 
   /**
-   * Returns a mock
+   * Returns a mock instance
    *
    * @param {Object} object The `object` to set the returned mock
    *
-   * @return {Object} The mock object
+   * @return {Object} The mock instance
   */
-  create(object) {
-    object = Object
-      .assign({}, this.defaultObject, object || {})
-
-    const modelObject = Reflect
-      .construct(this.model, [object])
-
-    return modelObject
-  }
-
   getMock(object) {
     return this.create(object)
   }
 
+  /**
+   * Returns the lis of mock instances
+   *
+   * @param {Object} params The `attrs` to set in mocks
+   * @param {Number} length The number of mocks to be created
+   *
+   * @return {Array} The lis of mock instances
+  */
   getMocks (params = {}, length = 3) {
     const mocks = []
 
@@ -59,10 +82,22 @@ class GenericModelMock {
     return mocks
   }
 
+  /**
+   * Returns a mocked `id` attr
+   *
+   * @return {*} The mock `id` attr
+  */
   getIdMock() {
     return Math.round(Math.random() * 999999)
   }
 
+  /**
+   * Returns a list of mocked `id` attrs
+   *
+   * @param {Number} length The number of ids to be created
+   *
+   * @return {*} The list of mock `id` attrs
+  */
   getIdMocks(length = 3) {
     const ids = []
 
@@ -72,11 +107,52 @@ class GenericModelMock {
     return ids
   }
 
+  /**
+   * Returns the `model`'s related `ids` attrs
+   * @async
+   * @override
+   *
+   * @return {Object} The `model`'s related ids
+  */
+  getRelatedAttrs() {
+    return {}
+  }
+
+  /**
+   * Returns a mock `object`
+   *
+   * @param {Object} object The `object` to set the returned mock
+   *
+   * @return {Object} The mock `object`
+  */
   createObject(object) {
     return Object
       .assign({}, this.defaultObject, object || {})
   }
 
+  /**
+   * Returns a mock instance
+   *
+   * @param {Object} object The `object` to set the returned mock
+   *
+   * @return {Object} The mock instance
+  */
+  create(object) {
+    const objectTemp = this.createObject(object)
+
+    const modelObject = Reflect
+      .construct(this.model, [objectTemp])
+
+    return modelObject
+  }
+
+  /**
+   * Inserts a mock on `db`
+   *
+   * @param {Object} object The `object` to be inserted
+   *
+   * @return {Promise} The inserted mock
+  */
   insert(object) {
     return new Promise((resolve, reject) => {
       if (!object)
@@ -94,6 +170,13 @@ class GenericModelMock {
     })
   }
 
+  /**
+   * Inserts a mock on `db` using `this.defaultObject`
+   *
+   * @param {Object} object The `object` to be inserted
+   *
+   * @return {Promise} The inserted mock
+  */
   insertDefault(object) {
     if (!object)
       object = {}
@@ -103,9 +186,15 @@ class GenericModelMock {
     return this.insert(object)
   }
 
+  /**
+   * Deletes `db` rows based on `params`
+   *
+   * @param {Object} params The filter params
+   *
+   * @return {Promise} The `knex` `del` response
+  */
   delete(params) {
-    const model = this
-      .create()
+    const model = this.create()
 
     let idAttribute = model.idAttribute || 'id'
     let queryBuilder = model.query()
@@ -129,18 +218,6 @@ class GenericModelMock {
       .whereRaw(`${idAttribute} IN (${queryBuilder.toString()})`)
       .del()
   }
-
-  /**
-   * Returns the `model`'s related `ids` attrs
-   * @async
-   * @override
-   *
-   * @return {Object} The `model`'s related ids
-  */
-  getRelatedAttrs() {
-    return {}
-  }
-
 
   /**
    * Inserts a random `Model`
@@ -246,8 +323,6 @@ class GenericModelMock {
 
     return this
   }
-
-  get defaultObject () { return this._defaultObject }
 }
 
 module.exports = GenericModelMock
