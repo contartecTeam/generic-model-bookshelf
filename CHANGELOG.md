@@ -1,3 +1,10 @@
+## 0.4.5 (2021-06-24)
+
+
+### Code Refactoring
+
+* [`GenericModel`] `pivots` não incluídos na saída do `.toJSON`
+
 ## 0.4.4 (2021-03-08)
 
 
