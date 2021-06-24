@@ -44,7 +44,7 @@
   "devDependencies": {
     "@contartec-team/git-hooks": "git+https://github.com/contartec-team/git-hooks.git",
     "@contartec-team/version-release": "^0.1.0",
-    "bookshelf": "1.1.x",
+    "bookshelf": "1.2.x",
     "bookshelf-modelbase": "^2.10.1",
     "bookshelf-soft-delete": "^3.3.0",
     "chai": "^3.5.0",
